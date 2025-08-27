@@ -220,13 +220,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
     borderWidth: 2,
-    borderColor: "#032983ee",
+    borderColor: "#0a89ff",
   },
 
   backButtonText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#042574ee",
+    color: "#0a89ff",
   },
 
   saveButton: {
@@ -235,8 +235,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
     borderWidth: 2,
-    borderColor: "#032983ee",
-    backgroundColor: "#042574ee",
+    borderColor: "#0a89ff",
+    backgroundColor: "#0a89ff",
   },
 
   saveButtonText: {
