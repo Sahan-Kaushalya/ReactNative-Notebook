@@ -2,9 +2,13 @@ import React, { useState } from 'react';
 import { Button, ScrollView, StyleSheet, View, Text, Pressable, Alert, Image, TextInput } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Picker } from '@react-native-picker/picker';
 
 export default function SignUpScreen() {
   const [image, setImage] = useState<string | null>(null);
+  const [selectedCity, setCity] = useState('');
+
+  const cities = ['Colombo', 'Gampaha', 'Kirindiwela', 'Mathara', 'Kaduwela'];
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -68,8 +72,30 @@ export default function SignUpScreen() {
           <TextInput placeholder='Confirm Your PassWord' style={styles.input} secureTextEntry />
         </View>
 
-        
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputLabel}>Select City:</Text>
+          <View style={styles.cityselect}>
+            <Picker selectedValue={selectedCity} style={styles.cityPicker}
+              onValueChange={(itemValue) => setCity(itemValue)}>
+              <Picker.Item label='Select Your City' value={''} />
+              {cities.map((city, index) => (
+                <Picker.Item key={index} label={city} value={city} />
+              ))}
+            </Picker>
+          </View>
+        </View>
 
+        <View style={styles.buttonContainer}>
+
+          <Pressable style={styles.backButton}>
+            <Text style={styles.backButtonText}>Go Back</Text>
+          </Pressable>
+
+          <Pressable style={styles.saveButton}>
+            <Text style={styles.saveButtonText}>SIGN UP NOW</Text>
+          </Pressable>
+
+        </View>
       </View>
     </ScrollView>
   );
@@ -166,6 +192,60 @@ const styles = StyleSheet.create({
     padding: 12,
     fontSize: 16,
     backgroundColor: "#ffffff81",
-  }
+  },
+
+  cityselect: {
+    borderWidth: 1,
+    borderColor: "#042574ee",
+    borderRadius: 12,
+    backgroundColor: "#ffffff81",
+
+  },
+
+  cityPicker: {
+    height: 50,
+    color: "#042574ee",
+  },
+
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 6,
+  },
+
+  backButton: {
+    flex: 0.45,
+    backgroundColor: "transparent",
+    paddingVertical: 15,
+    borderRadius: 8,
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: "#032983ee",
+  },
+
+  backButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#042574ee",
+  },
+
+  saveButton: {
+    flex: 0.5,
+    paddingVertical: 15,
+    borderRadius: 8,
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: "#032983ee",
+    backgroundColor: "#042574ee",
+  },
+
+  saveButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#f5f5f5ee",
+    
+  },
+
+  
 
 });
