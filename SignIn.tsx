@@ -1,13 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
-import { AlertNotificationRoot } from 'react-native-alert-notification';
+import { ALERT_TYPE, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 import { SafeAreaView } from "react-native-safe-area-context";
+
+const PUBLIC_URL = "https://e39298c09317.ngrok-free.app";
 
 export default function SignInScreen() {
 
-      const [getUsername, setUsername] = React.useState("");
-      const [getEmail, setEmail] = React.useState("");
+    const [getEmail, setEmail] = React.useState("");
+    const [getPassword, setPassword] = React.useState("");
     return (
         <KeyboardAvoidingView style={{ flex: 1 }}
             behavior={Platform.OS === 'android' ? 'padding' : 'height'}
@@ -19,8 +21,8 @@ export default function SignInScreen() {
                         <StatusBar style="auto" />
                         <View>
                             <View style={styles.imageContainer}>
-                                <Image style={styles.imagehere} source={require("./assets/user1.png")}/>
-                                   
+                                <Image style={styles.imagehere} source={require("./assets/user1.png")} />
+
                             </View>
 
                             <View style={styles.appname}>
@@ -30,16 +32,64 @@ export default function SignInScreen() {
 
                             <View style={styles.inputContainer}>
                                 <Text style={styles.inputLabel}>Email Address:</Text>
-                                <TextInput placeholder='Enter Your Email Address' inputMode='email' keyboardType='email-address' style={styles.input} onChangeText={setUsername} value={getUsername} />
+                                <TextInput placeholder='Enter Your Email Address' inputMode='email' keyboardType='email-address' style={styles.input} onChangeText={setEmail} value={getEmail} />
                             </View>
 
                             <View style={styles.inputContainer}>
                                 <Text style={styles.inputLabel}>Password :</Text>
-                                <TextInput placeholder='Enter Your PassWord' style={styles.input} secureTextEntry onChangeText={setEmail} value={getEmail} />
+                                <TextInput placeholder='Enter Your PassWord' style={styles.input} secureTextEntry onChangeText={setPassword} value={getPassword} />
                             </View>
 
                             <View style={styles.buttonArea}>
-                                <Pressable style={styles.loginButton}>
+                                <Pressable style={styles.loginButton}
+                                    onPress={async () => {
+                                        try {
+                                            const loginDetails = {
+                                                email: getEmail,
+                                                password: getPassword,
+                                            };
+
+                                            const loginJSON = JSON.stringify(loginDetails);
+
+                                            const response = await fetch(PUBLIC_URL +"/Notebook/Signin", {
+                                                method: "POST",
+                                                body: loginJSON,
+                                                headers: {
+                                                    "Content-Type": "application/json",
+                                                },
+                                            });
+
+                                            if (response.ok) {
+                                                const json = await response.json();
+                                                if (json.status) {
+                                                    Toast.show({
+                                                        type: ALERT_TYPE.SUCCESS,
+                                                        title: "Success",
+                                                        textBody: "Congrats! Logged in successfully",
+                                                    });
+                                                } else {
+                                                    Toast.show({
+                                                        type: ALERT_TYPE.WARNING,
+                                                        title: "Warning",
+                                                        textBody: json.message || "Login failed",
+                                                    });
+                                                }
+                                            } else {
+                                                Toast.show({
+                                                    type: ALERT_TYPE.DANGER,
+                                                    title: "Error",
+                                                    textBody: "Something went wrong. Please try again.",
+                                                });
+                                            }
+                                        } catch {
+                                            Toast.show({
+                                                type: ALERT_TYPE.DANGER,
+                                                title: "Network Error",
+                                                textBody: "Somthing Went to Worng.. Login Failed ....",
+                                            });
+                                        }
+                                    }}
+                                >
                                     <Text style={styles.loginButtonText}>Login Now</Text>
                                 </Pressable>
                             </View>
