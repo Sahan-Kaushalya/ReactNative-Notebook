@@ -1,47 +1,60 @@
-import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { StatusBar } from 'expo-status-bar';
+import React from 'react';
+import { Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { AlertNotificationRoot } from 'react-native-alert-notification';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SignInScreen() {
+
+      const [getUsername, setUsername] = React.useState("");
+      const [getEmail, setEmail] = React.useState("");
     return (
-        <SafeAreaView style={styles.area}>
-            <ScrollView contentContainerStyle={styles.container}>
-                <View>
-                    <View style={styles.imageContainer}>
-                        <View style={styles.imagehere}>
-                            <Text style={styles.imageText}>Hello</Text>
+        <KeyboardAvoidingView style={{ flex: 1 }}
+            behavior={Platform.OS === 'android' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'android' ? 10 : 0}
+        >
+            <AlertNotificationRoot>
+                <SafeAreaView style={styles.area}>
+                    <ScrollView contentContainerStyle={styles.container}>
+                        <StatusBar style="auto" />
+                        <View>
+                            <View style={styles.imageContainer}>
+                                <Image style={styles.imagehere} source={require("./assets/user1.png")}/>
+                                   
+                            </View>
+
+                            <View style={styles.appname}>
+                                <Text style={styles.appTitle}> Notebook</Text>
+                                <Text style={styles.appSubtitle}> Welcome Back! , Please Sign in Your Account.</Text>
+                            </View>
+
+                            <View style={styles.inputContainer}>
+                                <Text style={styles.inputLabel}>Email Address:</Text>
+                                <TextInput placeholder='Enter Your Email Address' inputMode='email' keyboardType='email-address' style={styles.input} onChangeText={setUsername} value={getUsername} />
+                            </View>
+
+                            <View style={styles.inputContainer}>
+                                <Text style={styles.inputLabel}>Password :</Text>
+                                <TextInput placeholder='Enter Your PassWord' style={styles.input} secureTextEntry onChangeText={setEmail} value={getEmail} />
+                            </View>
+
+                            <View style={styles.buttonArea}>
+                                <Pressable style={styles.loginButton}>
+                                    <Text style={styles.loginButtonText}>Login Now</Text>
+                                </Pressable>
+                            </View>
+
+                            <View style={styles.buttonArea2}>
+                                <Pressable style={styles.newButton}>
+                                    <Text style={styles.newButtonText}>Create New Account</Text>
+                                </Pressable>
+                            </View>
+
                         </View>
-                    </View>
-
-                    <View style={styles.appname}>
-                        <Text style={styles.appTitle}> Notebook</Text>
-                        <Text style={styles.appSubtitle}> Welcome Back! , Please Sign in Your Account.</Text>
-                    </View>
-
-                    <View style={styles.inputContainer}>
-                        <Text style={styles.inputLabel}>Email Address:</Text>
-                        <TextInput placeholder='Enter Your Email Address' inputMode='email' keyboardType='email-address' style={styles.input} />
-                    </View>
-
-                    <View style={styles.inputContainer}>
-                        <Text style={styles.inputLabel}>Password :</Text>
-                        <TextInput placeholder='Enter Your PassWord' style={styles.input} secureTextEntry />
-                    </View>
-
-                    <View style={styles.buttonArea}>
-                        <Pressable style={styles.loginButton}>
-                            <Text style={styles.loginButtonText}>Login Now</Text>
-                        </Pressable>
-                    </View>
-
-                    <View style={styles.buttonArea2}>
-                        <Pressable style={styles.newButton}>
-                            <Text style={styles.newButtonText}>Create New Account</Text>
-                        </Pressable>
-                    </View>
-
-                </View>
-            </ScrollView>
-        </SafeAreaView>
+                    </ScrollView>
+                </SafeAreaView>
+            </AlertNotificationRoot>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -124,7 +137,7 @@ const styles = StyleSheet.create({
 
     buttonArea: {
         marginTop: 6,
-        marginBottom:6,
+        marginBottom: 6,
     },
 
     buttonArea2: {
@@ -141,14 +154,14 @@ const styles = StyleSheet.create({
         backgroundColor: "#0a89ff",
     },
 
-    loginButtonText:{
-        color:"#f5f5f5ee",
-        fontStyle:"normal",
-        fontWeight:"bold",
-        fontSize:20,
+    loginButtonText: {
+        color: "#f5f5f5ee",
+        fontStyle: "normal",
+        fontWeight: "bold",
+        fontSize: 20,
     },
 
-     newButton: {
+    newButton: {
         flex: 0.5,
         paddingVertical: 12,
         borderRadius: 16,
@@ -157,10 +170,10 @@ const styles = StyleSheet.create({
         borderColor: "#0a89ff",
     },
 
-    newButtonText:{
-        color:"#0a89ff",
-        fontStyle:"normal",
-        fontWeight:"bold",
-        fontSize:20,
+    newButtonText: {
+        color: "#0a89ff",
+        fontStyle: "normal",
+        fontWeight: "bold",
+        fontSize: 20,
     }
 });
